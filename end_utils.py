@@ -96,11 +96,12 @@ def pointer_to_mri(Cam_T_PntRef, Cam_T_PatRef, PatRef_T_MRI, point_in_pointer_co
 ##### ENDOSCOPE SPECIFIC UTILS FUNCTIONS
 
 
-def get_transform_mri_cam(MRI_T_PatRef , PatRef_T_Cam , Cam_T_EndRef , Hand_T_Eye):
+def get_transform_mri_cam(MRI_T_PatRef, PatRef_T_Cam , Cam_T_EndRef , Hand_T_Eye):
     transform = MRI_T_PatRef @ PatRef_T_Cam @ Cam_T_EndRef @ Hand_T_Eye
     return transform
 
-def camera_to_mri(MRI_T_PatRef, PatRef_T_Cam, Cam_T_EndRef, Hand_T_Eye, point_in_camera_coords=[0, 0, 0]):
+
+def camera_to_mri(MRI_T_PatRef, PatRef_T_Cam, Cam_T_EndRef, Hand_T_Eye, point_in_camera_coords):
     """
 
     Args:
@@ -113,17 +114,18 @@ def camera_to_mri(MRI_T_PatRef, PatRef_T_Cam, Cam_T_EndRef, Hand_T_Eye, point_in
     Returns:
 
     """
-    """
-    Converts a point in camera space to MRI space.
-    """
+
     transform = get_transform_mri_cam(MRI_T_PatRef , PatRef_T_Cam , Cam_T_EndRef , Hand_T_Eye)
+    #transform = get_transform_mri_cam(MRI_T_PatRef)
     #transform = Hand_T_Eye
 
-    out_point = multiply_point_by_matrix(transform, point_in_camera_coords)
+    out_point = transform @ point_in_camera_coords
+
     return out_point
 
 
-def mri_to_camera(MRI_T_PatRef, PatRef_T_Cam, Cam_T_EndRef, Hand_T_Eye,  point_in_mri_coords=[0, 0, 0]):
+def mri_to_camera(MRI_T_PatRef, PatRef_T_Cam, Cam_T_EndRef, Hand_T_Eye, point_in_mri_coords):
+
     """
 
     Args:
@@ -139,12 +141,14 @@ def mri_to_camera(MRI_T_PatRef, PatRef_T_Cam, Cam_T_EndRef, Hand_T_Eye,  point_i
     """
     Converts a point in camera space to MRI space.
     """
+
     transform = get_transform_mri_cam(MRI_T_PatRef , PatRef_T_Cam , Cam_T_EndRef , Hand_T_Eye)
+    #transform = get_transform_mri_cam(MRI_T_PatRef)
+
     transform = np.linalg.inv(transform)
     #transform = Hand_T_Eye @ EndRef_T_Cam @ Cam_T_PatRef @ PatRef_T_MRI
 
-    # transform = np.linalg.inv(transform)
-    out_point = multiply_point_by_matrix(transform, point_in_mri_coords)
+    out_point = transform @ point_in_mri_coords
     return out_point
 
 
