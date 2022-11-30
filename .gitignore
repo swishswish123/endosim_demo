@@ -9,6 +9,12 @@ __pycache__/
 .idea/
 .DS_Store
 
+calibration/endoscope_calibration_3_0zoom/
+calibration/endoscope_calibration_6mm_0zoom/
+notebooks/phantom_m
+notebooks/results
+notebooks/endosim_demo
+
 # Distribution / packaging
 .Python
 build/
