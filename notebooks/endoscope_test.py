@@ -503,7 +503,7 @@ if __name__=='__main__':
     working_distance = 50
 
     # for simulation to be reproducible
-    number_samples = 10
+    number_samples = 1000
 
     x_t = 100 # head length (about 20cm)
     y_t = 130 # menton to top of head (about 25cm)
